@@ -1,0 +1,69 @@
+.flex {
+  display: flex;
+}
+
+.col-w {
+  width: 600px;
+}
+
+.dot-w {
+  width: 50px;
+}
+
+.field-body {
+  display: flex;
+  justify-content: center;
+}
+
+table tr {
+  height: 50px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.header-sub {
+  text-align: center;
+  font-size: 26px;
+}
+
+.header-title {
+  border-bottom: 3px solid black;
+  font-size: 32px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.doc-seal {
+  display: flex;
+  gap: 60px;
+}
+
+tr td,
+.footer p {
+  font-size: 26px !important;
+}
+
+.container {
+  width: 1500px; /* Set a fixed width */
+  /* Allow content to overflow the container */
+}
+/* Media query for printing (PDF generation) */
+@media print {
+  .container {
+    width: 800px; /* Set a fixed width for printing */
+  }
+}
+
+@media print {
+  body {
+    zoom: 100%;
+  }
+}

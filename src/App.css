@@ -1,0 +1,8 @@
+.section {
+  display: flex;
+  justify-content: center;
+}
+
+.template {
+  background-color: red;
+}
