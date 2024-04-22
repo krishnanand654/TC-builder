@@ -5,18 +5,19 @@ import Template from '../../Components/Template/Template';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
+import { Margin } from 'react-to-pdf';
 const { Option } = Select;
 function InputForm() {
 
     const [data, setData] = useState({});
 
 
-    const [dobDate, setDobDate] = useState(""); // Date of birth
-    const [admissionDate, setAdmissionDate] = useState(""); // Admission date
-    const [lastAttendanceDate, setLastAttendanceDate] = useState(""); // Last attendance date
-    const [nameRemovedDate, setNameRemovedDate] = useState(""); // Date name was removed from rolls
-    const [applicationForCertificateDate, setApplicationForCertificateDate] = useState(""); // Application for certificate date
-    const [certificateIssueDate, setCertificateIssueDate] = useState(""); // Date of certificate issue
+    const [dobDate, setDobDate] = useState("");
+    const [admissionDate, setAdmissionDate] = useState("");
+    const [lastAttendanceDate, setLastAttendanceDate] = useState("");
+    const [nameRemovedDate, setNameRemovedDate] = useState("");
+    const [applicationForCertificateDate, setApplicationForCertificateDate] = useState("");
+    const [certificateIssueDate, setCertificateIssueDate] = useState("");
 
 
     const onFinish = (values) => {
@@ -32,12 +33,33 @@ function InputForm() {
 
     };
 
-    const onDobDateChange = (date, dateString) => setDobDate(dateString);
-    const onAdmissionDateChange = (date, dateString) => setAdmissionDate(dateString);
-    const onLastAttendanceDateChange = (date, dateString) => setLastAttendanceDate(dateString);
-    const onNameRemovedDateChange = (date, dateString) => setNameRemovedDate(dateString);
-    const onApplicationForCertificateDateChange = (date, dateString) => setApplicationForCertificateDate(dateString);
-    const onCertificateIssueDateChange = (date, dateString) => setCertificateIssueDate(dateString);
+    function convertDateFormat(inputDate) {
+
+        var parts = inputDate.split('-');
+        var convertedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+        var day = convertedDate.getDate();
+        var month = convertedDate.getMonth() + 1;
+        var year = convertedDate.getFullYear();
+
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+
+        return day + '/' + month + '/' + year;
+    }
+
+
+
+    const onDobDateChange = (date, dateString) => setDobDate(convertDateFormat(dateString));
+    const onAdmissionDateChange = (date, dateString) => setAdmissionDate(convertDateFormat(dateString));
+    const onLastAttendanceDateChange = (date, dateString) => setLastAttendanceDate(convertDateFormat(dateString));
+    const onNameRemovedDateChange = (date, dateString) => setNameRemovedDate(convertDateFormat(dateString));
+    const onApplicationForCertificateDateChange = (date, dateString) => setApplicationForCertificateDate(convertDateFormat(dateString));
+    const onCertificateIssueDateChange = (date, dateString) => setCertificateIssueDate(convertDateFormat(dateString));
 
     const user = localStorage.getItem("user");
     return (
@@ -45,7 +67,7 @@ function InputForm() {
             {user ? (
                 <>
                     < Navbar />
-                    <div className='section'>
+                    <div className='section' style={{ padding: '100px' }}>
                         <div>
                             <Form name="custom-form" onFinish={onFinish}>
 
@@ -151,14 +173,40 @@ function InputForm() {
                                     <Input className='custom-input' />
                                 </Form.Item>
 
-
-                                <Form.Item label="Number of School days unto the date" name="schoolDaysUntoDate" rules={[{ required: true, message: 'Please enter the number of days' }]}>
+                                <Form.Item
+                                    label="Number of School days unto the date"
+                                    name="schoolDaysUntoDate"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please enter the number of days',
+                                        },
+                                        {
+                                            pattern: /^[0-9]+$/,
+                                            message: 'Please enter a valid number of days (numeric characters only)',
+                                        },
+                                    ]}
+                                >
                                     <Input className='custom-input' />
                                 </Form.Item>
 
-                                <Form.Item label="Number of School days pupil attended" name="schoolDaysAttended" rules={[{ required: true, message: 'Please enter the number of days' }]}>
+                                <Form.Item
+                                    label="Number of School days pupil attended"
+                                    name="schoolDaysAttended"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please enter the number of days',
+                                        },
+                                        {
+                                            pattern: /^[0-9]+$/,
+                                            message: 'Please enter a valid number of days (numeric characters only)',
+                                        },
+                                    ]}
+                                >
                                     <Input className='custom-input' />
                                 </Form.Item>
+
 
 
                                 <Form.Item label="Character and Conduct" name="characterAndConduct">
@@ -177,8 +225,9 @@ function InputForm() {
                     <div>
                         <Template values={data} />
                     </div>
-                </>) : <p>Please Login</p>}
-        </div>
+                </>) : <p>Please Login</p>
+            }
+        </div >
 
     )
 }

@@ -13,9 +13,7 @@ const Template = ({ values }) => {
     });
     return (
         <div className='test'>
-            <div style={{ display: 'flex', justifyContent: "center" }}>
-                <Button type="primary" className='download-btn' onClick={() => toPDF()}>Download PDF</Button>
-            </div>
+
             <div ref={targetRef}>
                 <div className='container' >
                     <div className='header' >
@@ -168,14 +166,17 @@ const Template = ({ values }) => {
                             </table>
                             <div className='footer'>
                                 <p>PRINCIPAL</p>
-                               
-                                    <p>School Seal</p>
-                                    <p style={{ lineHeight: "32px" }}>Co-Ordinator NIOS<br /> <span style={{ fontWeight: '600' }}>Gayathri Vidya Mandir</span></p>
-                               
+
+                                <p>School Seal</p>
+                                <p style={{ lineHeight: "32px" }}>Co-Ordinator NIOS<br /> <span style={{ fontWeight: '600' }}>Gayathri Vidya Mandir</span></p>
+
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: "center", marginBottom: '100px', marginTop: '30px' }}>
+                <Button type="primary" className='download-btn' onClick={() => toPDF()} style={{ fontSize: '24px', padding: '10px', height: '100%', fontWeight: '600' }}>Download PDF</Button >
             </div>
         </div>
     )
