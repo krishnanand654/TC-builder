@@ -168,10 +168,10 @@ const Template = ({ values }) => {
                             </table>
                             <div className='footer'>
                                 <p>PRINCIPAL</p>
-                                <div className='doc-seal'>
+                               
                                     <p>School Seal</p>
                                     <p style={{ lineHeight: "32px" }}>Co-Ordinator NIOS<br /> <span style={{ fontWeight: '600' }}>Gayathri Vidya Mandir</span></p>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
