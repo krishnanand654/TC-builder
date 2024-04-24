@@ -38,7 +38,8 @@ table tr {
 .footer {
   display: flex;
   justify-content: space-between;
-  margin-top: 150px;
+
+  margin: 150px 50px 100px;
 }
 
 .doc-seal {
