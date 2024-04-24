@@ -168,7 +168,7 @@ const Template = ({ values }) => {
                                 <p>PRINCIPAL</p>
 
                                 <p>School Seal</p>
-                                <p style={{ lineHeight: "32px" }}>Co-Ordinator NIOS<br /> <span style={{ fontWeight: '600' }}>Gayathri Vidya Mandir</span></p>
+                                <p style={{ lineHeight: "32px" }}>Co-Ordinator NIOS<br /> <span style={{ fontWeight: '600', padding: '30px 0 30px' }}>Gayathri Vidya Mandir</span></p>
 
                             </div>
                         </div>
