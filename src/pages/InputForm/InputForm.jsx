@@ -108,7 +108,8 @@ function InputForm() {
                                 } rules={[{ required: true, message: 'Please select an option' }]}>
                                     <Select >
                                         <Option value="General">General</Option>
-                                        <Option value="SC/ST">SC/ST</Option>
+                                        <Option value="SC">SC</Option>
+                                        <Option value="ST">ST</Option>
                                         <Option value="OBC">OBC</Option>
                                         <Option value="Convert">Convert</Option>
                                     </Select>
