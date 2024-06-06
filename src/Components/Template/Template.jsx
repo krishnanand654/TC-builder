@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { usePDF } from 'react-to-pdf';
-import { Button } from 'antd';
+
+import { Button } from '@nextui-org/react';
 import './template.css';
 const Template = ({ values }) => {
     const { toPDF, targetRef } = usePDF({
@@ -19,7 +20,7 @@ const Template = ({ values }) => {
                     <div className='header' >
                         <div style={{ margin: "40px 0 20px" }}>
                             <h3 className='header-sub'>Form 5</h3>
-                            <h2 className='header-title'>TRANSFER CERTIFICATE</h2>
+                            <h2 className='header-title pb-3 border-b-3 border-black '>TRANSFER CERTIFICATE</h2>
                         </div>
                     </div>
                     <div className='field-body' >
@@ -164,7 +165,7 @@ const Template = ({ values }) => {
                                 </tr>
 
                             </table>
-                            <div className='footer'>
+                            <div className='template-footer'>
                                 <p>PRINCIPAL</p>
 
                                 <p>School Seal</p>
@@ -176,7 +177,7 @@ const Template = ({ values }) => {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: "center", marginBottom: '100px', marginTop: '30px' }}>
-                <Button type="primary" className='download-btn' onClick={() => toPDF()} style={{ fontSize: '24px', padding: '10px', height: '100%', fontWeight: '600' }}>Download PDF</Button >
+                <Button className='download-btn ' onClick={() => toPDF()} style={{ fontSize: '18px', padding: '10px', height: '100%', fontWeight: '600' }}>Download PDF</Button >
             </div>
         </div>
     )

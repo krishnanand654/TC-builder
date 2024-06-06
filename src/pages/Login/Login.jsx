@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Navbar from '../../Components/Navbar/Navbar';
+// import Navbar from '../../Components/Navbar/Navbar';
 
 const Login = () => {
     const [failed, setFailed] = useState(false);
@@ -12,7 +12,7 @@ const Login = () => {
         console.log(import.meta.env.USERNAME)
         if (values.username === import.meta.env.VITE_USERNAME && values.password === import.meta.env.VITE_PASSWORD) {
             console.log("true")
-            nav("/form");
+            nav("/home");
             localStorage.setItem('user', true);
         } else {
             setFailed(true);
@@ -25,7 +25,7 @@ const Login = () => {
     };
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className='login-ctn'>
 
                 <div>

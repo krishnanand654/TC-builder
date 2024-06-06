@@ -15,7 +15,7 @@
   justify-content: center;
 }
 
-table tr {
+.field-body table tr {
   height: 60px;
 }
 
@@ -31,11 +31,11 @@ table tr {
 }
 
 .header-title {
-  border-bottom: 3px solid black;
+  /* border-bottom: 3px solid black; */
   font-size: 32px;
 }
 
-.footer {
+.template-footer {
   display: flex;
   justify-content: space-between;
 
@@ -49,13 +49,14 @@ table tr {
 }
 
 tr td,
-.footer p {
+.template-footer p {
   font-size: 26px !important;
 }
 
 .container {
   width: 1500px; /* Set a fixed width */
   /* Allow content to overflow the container */
+  font-family: "Times New Roman", Times, serif;
 }
 /* Media query for printing (PDF generation) */
 @media print {
