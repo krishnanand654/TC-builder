@@ -1,6 +1,6 @@
 import { usePDF } from 'react-to-pdf';
 import { Button } from '@nextui-org/react';
-import './previewtcTemplate.css';
+// import './previewtcTemplate.css';
 import { useSelector, useDispatch } from 'react-redux';
 
 
