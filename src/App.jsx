@@ -16,11 +16,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/tcform" element={<InputForm />} />
-
         <Route path="/bonafiedform" element={<Bonafied />} />
         <Route path="/preview" element={<PreviewTcTemplate />} />
-
-
       </Routes>
     </>
   )
