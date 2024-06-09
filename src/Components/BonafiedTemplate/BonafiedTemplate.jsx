@@ -1,30 +1,9 @@
 import { Button } from 'antd';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { setData, setInvokeStatus } from '../../redux/actions';
+
 import './BonafiedTemplate.css'
 
 const BonafiedTemplate = ({ values }) => {
-
-    const dispatch = useDispatch();
-
-
-    const invokePdf = () => {
-        dispatch(setInvokeStatus(!invokeStatus))
-        dispatch(setData(values))
-
-    }
-    const invokeStatus = useSelector(state => state.invokeStatus);
-
-    const value = useSelector(state => state.data);
-
-
-    useEffect(() => {
-        console.log(invokeStatus);
-
-    }, [invokePdf])
-
 
 
     return (
@@ -36,7 +15,7 @@ const BonafiedTemplate = ({ values }) => {
                     <p>Yours Faithfully</p>
 
                 </div>
-                <Button type="primary" onClick={invokePdf}>Generate PDF</Button>
+                {/* <Button type="primary" onClick={invokePdf}>Generate PDF</Button> */}
             </div>
 
         </>

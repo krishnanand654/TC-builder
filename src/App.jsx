@@ -6,7 +6,7 @@ import Login from './pages/Login/Login'
 import Home from './pages/Home/Home'
 import Bonafied from './pages/Bonafied/Bonafied'
 import PreviewTcTemplate from './Components/PreviewTcTemplate/PreviewTcTemplate'
-
+import Test from './pages/Test/Test'
 function App() {
 
 
@@ -17,6 +17,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tcform" element={<InputForm />} />
         <Route path="/bonafiedform" element={<Bonafied />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/preview" element={<PreviewTcTemplate />} />
       </Routes>
     </>
