@@ -77,7 +77,7 @@ const Home = () => {
     return (
         <>
             <AppNavbar />
-            <div className="flex p-20">
+            <div className="flex flex-wrap p-20">
 
                 <div className="mt-20 h-80" >
                     <AppCalender />
