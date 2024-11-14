@@ -2,21 +2,36 @@ import { Button, Form, Input } from 'antd';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 // import Navbar from '../../Components/Navbar/Navbar';
 
 const Login = () => {
     const [failed, setFailed] = useState(false);
-    const nav = useNavigate();
-    const onFinish = (values) => {
+    const [loading, setLoading] = useState(false);
 
-        console.log(import.meta.env.USERNAME)
-        if (values.username === import.meta.env.VITE_USERNAME && values.password === import.meta.env.VITE_PASSWORD) {
-            console.log("true")
+    const nav = useNavigate();
+
+    const onFinish = async(values) => {
+        setLoading(true);
+
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, values, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
             nav("/home");
-            localStorage.setItem('user', true);
-        } else {
+            localStorage.setItem('token', response.data.token);
+            setLoading(false);
+        })
+        .catch(error => {
             setFailed(true);
-        }
+            console.error('Error creating PDF:', error);
+        })
+        .finally(()=>{
+            setLoading(false)
+        });
+
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -92,7 +107,7 @@ const Login = () => {
                                 span: 16,
                             }}
                         >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" loading = {loading}>
                                 Submit
                             </Button>
                         </Form.Item>

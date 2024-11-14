@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Form, Input, Select, DatePicker, Button, Col } from 'antd';
-
+import axios from 'axios';
 import Template from '../../Components/Template/Template';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { Margin } from 'react-to-pdf';
 import AppNavbar from '../../Components/AppNavbar/AppNavbar';
 import AppCalender from '../../Components/AppCalender/AppCalender';
+import DownloadModal from '../../Components/Modal/DownloadModal';
+
+
 const { Option } = Select;
 function InputForm() {
 
@@ -17,21 +20,35 @@ function InputForm() {
     const [dobDate, setDobDate] = useState("");
     const [admissionDate, setAdmissionDate] = useState("");
     const [lastAttendanceDate, setLastAttendanceDate] = useState("");
-    const [nameRemovedDate, setNameRemovedDate] = useState("");
-    const [applicationForCertificateDate, setApplicationForCertificateDate] = useState("");
+    const [removedDate, setRemovedDate] = useState("");
+    const [applicationDate, setApplicationDate] = useState("");
     const [certificateIssueDate, setCertificateIssueDate] = useState("");
 
+    const token = localStorage.getItem("token");
 
-    const onFinish = (values) => {
-        console.log('Form values:', values);
+
+    const onFinish = async(values) => {
         values.dob = dobDate;
         values.admissionDate = admissionDate;
         values.lastAttendanceDate = lastAttendanceDate;
-        values.nameRemovedDate = nameRemovedDate;
-        values.applicationForCertificate = applicationForCertificateDate;
+        values.removedDate = removedDate;
+        values.applicationDate = applicationDate;
         values.certificateIssueDate = certificateIssueDate;
         setData(values);
-        console.log(Object);
+     
+
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/generate-pdf`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            console.log('PDF created successfully:', response.data);
+        })
+        .catch(error => {
+            console.error('Error creating PDF:', error);
+        });
 
     };
 
@@ -59,21 +76,21 @@ function InputForm() {
     const onDobDateChange = (date, dateString) => setDobDate(convertDateFormat(dateString));
     const onAdmissionDateChange = (date, dateString) => setAdmissionDate(convertDateFormat(dateString));
     const onLastAttendanceDateChange = (date, dateString) => setLastAttendanceDate(convertDateFormat(dateString));
-    const onNameRemovedDateChange = (date, dateString) => setNameRemovedDate(convertDateFormat(dateString));
-    const onApplicationForCertificateDateChange = (date, dateString) => setApplicationForCertificateDate(convertDateFormat(dateString));
+    const onRemovedDateChange = (date, dateString) => setRemovedDate(convertDateFormat(dateString));
+    const onApplicationDateChange = (date, dateString) => setApplicationDate(convertDateFormat(dateString));
     const onCertificateIssueDateChange = (date, dateString) => setCertificateIssueDate(convertDateFormat(dateString));
 
-    const user = localStorage.getItem("user");
+    
     return (
         <>
             <AppNavbar />
             <div >
-                {user ? (
+                {token ? (
                     <>
 
                         {/* < Navbar /> */}
                         <div>
-                            <div className='section' style={{ padding: '100px' }}>
+                            <div className='section' style={{ padding: '100px 20px' }}>
                                 <div>
                                     <Form name="custom-form" onFinish={onFinish}>
 
@@ -81,7 +98,7 @@ function InputForm() {
                                             <Input className='custom-input' />
                                         </Form.Item>
 
-                                        <Form.Item label="Name of pupil" name="nameOfPupil" rules={[{ required: true, message: 'Please enter the name of the pupil' }]}>
+                                        <Form.Item label="Name of pupil" name="pupilName" rules={[{ required: true, message: 'Please enter the name of the pupil' }]}>
                                             <Input className='custom-input' />
                                         </Form.Item>
 
@@ -92,7 +109,7 @@ function InputForm() {
                                         </Col>
 
 
-                                        <Form.Item label="Name of parent/guardian and relationship to the guardian" name="parentName" rules={[{ required: true, message: 'Please enter the parent/guardian name' }]}>
+                                        <Form.Item label="Name of parent/guardian and relationship to the guardian" name="guardianName" rules={[{ required: true, message: 'Please enter the parent/guardian name' }]}>
                                             <Input className='custom-input' />
                                         </Form.Item>
 
@@ -104,7 +121,7 @@ function InputForm() {
                                             <Input className='custom-input' />
                                         </Form.Item>
 
-                                        <Form.Item name="caste" label={
+                                        <Form.Item name="casteCategory" label={
                                             <span style={{ height: "45px" }}>
                                                 Whether the candidate belongs to SC/ST or OBC<br />
                                                 or whether he/she is a convert from the SC/ST
@@ -159,14 +176,14 @@ function InputForm() {
                                             <DatePicker onChange={onLastAttendanceDateChange} />
                                         </Form.Item>
 
-                                        <Form.Item label="Date on which the name was removed from rolls" name="nameRemovedDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onNameRemovedDateChange} />
+                                        <Form.Item label="Date on which the name was removed from rolls" name="removedDate" rules={[{ required: true, message: 'Please select a date' }]}>
+                                            <DatePicker onChange={onRemovedDateChange} />
                                         </Form.Item>
 
 
 
-                                        <Form.Item label="Date of Application for Certificate" name="applicationForCertificate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onApplicationForCertificateDateChange} />
+                                        <Form.Item label="Date of Application for Certificate" name="applicationDate" rules={[{ required: true, message: 'Please select a date' }]}>
+                                            <DatePicker onChange={onApplicationDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Date of Issue of the Certificate" name="certificateIssueDate" rules={[{ required: true, message: 'Please select a date' }]}>
@@ -222,16 +239,11 @@ function InputForm() {
                                         </Form.Item>
 
                                         <Form.Item>
-                                            <Button type="primary" htmlType="submit" >
-                                                Submit
-                                            </Button>
+                                            <DownloadModal/>
                                         </Form.Item>
                                     </Form>
                                 </div>
 
-                            </div>
-                            <div>
-                                <Template values={data} />
                             </div>
                         </div>
                     </>) : <p>Please Login</p>

@@ -77,13 +77,13 @@ const Home = () => {
     return (
         <>
             <AppNavbar />
-            <div className="flex p-20">
+            <div className="flex  lg:p-20 pt-20">
 
-                <div className="mt-20 h-80" >
+                <div className=" h-80 lg:block hidden" >
                     <AppCalender />
                 </div>
 
-                <div className="ml-10 flex align-items-center flex-col" >
+                <div className="p-10 sm:p-0 sm:pt-0 sm:ml-10 flex align-items-center flex-col" >
                     <div>
                         <p className="text-[24px] font-medium mb-1">GVM services</p>
                         <p>Tools to simplify tasks and automate processes</p>
