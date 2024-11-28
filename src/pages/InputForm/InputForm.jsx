@@ -283,8 +283,8 @@ function InputForm() {
                                         </Form.Item>
 
                                         <Form.Item>
-                                            <div className="flex justify-between">
-                                                <div className="flex  align-items-center gap-4">
+                                            <div className="flex flex-wrap justify-between gap-3">
+                                                <div className="flex flex-wrap align-items-center gap-4">
                                                 <Button className="bg-black text-white " htmlType="submit" loading={isLoading}>
                                                     {isLoading ? 'Generating' : !isSuccess ? 'Submit' : <>
                                                         <div className="flex gap-2 align-items-center">
