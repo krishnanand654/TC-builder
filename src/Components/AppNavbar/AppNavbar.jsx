@@ -8,7 +8,7 @@ import UserAvatar from '../UserAvatar/UserAvatar';
 function AppNavbar() {
     return (
         <Navbar expand="lg" className=" border-1 border-gray fixed w-full" style={{ position: 'fixed', width: '100%', background: 'white', zIndex: '1000' }} >
-            <Container fluid>
+            <Container >
                 <Navbar.Brand href="/home" className="font-bold ">GVM</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">

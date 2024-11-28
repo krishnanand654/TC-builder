@@ -15,7 +15,7 @@ export default function UserAvatar() {
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
 
-          <img src="https://cdn-icons-png.flaticon.com/256/9230/9230519.png" className="w-12 h-12 border-3 rounded-full p-[2px]" />
+          <img src="https://cdn-icons-png.flaticon.com/256/9230/9230519.png" className="w-10 h-10 border-3 rounded-full p-[2px]" />
 
         </DropdownTrigger>
 

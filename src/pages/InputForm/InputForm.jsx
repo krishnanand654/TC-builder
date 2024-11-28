@@ -1,22 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { Form, Input, Select, DatePicker, Button, Col } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Col, message } from 'antd';
 import axios from 'axios';
-import Template from '../../Components/Template/Template';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import Navbar from '../../Components/Navbar/Navbar';
-import { Margin } from 'react-to-pdf';
 import AppNavbar from '../../Components/AppNavbar/AppNavbar';
-import AppCalender from '../../Components/AppCalender/AppCalender';
-import DownloadModal from '../../Components/Modal/DownloadModal';
-
+import { ReloadOutlined, CloudDownloadOutlined, EyeOutlined } from '@ant-design/icons'
 
 const { Option } = Select;
 function InputForm() {
 
-    const [data, setData] = useState({});
-
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState("");
+    const [isDownloaded, setIsDownloaded] = useState(false);
+    const [response, setResponse] = useState({});
     const [dobDate, setDobDate] = useState("");
     const [admissionDate, setAdmissionDate] = useState("");
     const [lastAttendanceDate, setLastAttendanceDate] = useState("");
@@ -26,31 +23,49 @@ function InputForm() {
 
     const token = localStorage.getItem("token");
 
+    const nav = useNavigate();
 
-    const onFinish = async(values) => {
+
+    const onFinish = (values) => {
         values.dob = dobDate;
         values.admissionDate = admissionDate;
         values.lastAttendanceDate = lastAttendanceDate;
         values.removedDate = removedDate;
         values.applicationDate = applicationDate;
         values.certificateIssueDate = certificateIssueDate;
-        setData(values);
-     
 
+        populateData(values);
+    };
+
+    const populateData = async (data) => {
+        setIsLoading(true);
         await axios.post(`${import.meta.env.VITE_BASE_URL}/generate-pdf`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {
-            console.log('PDF created successfully:', response.data);
-        })
-        .catch(error => {
-            console.error('Error creating PDF:', error);
-        });
+            .then(response => {
+                setIsLoading(false);
+                setIsSuccess(true);
+                message.success('Pdf Generated successfully');
+                console.log(response.data);
+                setResponse(response.data);
+            })
+            .catch(error => {
+                setIsSuccess(false);
+                if (error.response.status == 403) {
+                    localStorage.clear();
+                    nav('/')
+                }
+                message.error('Error creating PDF');
+            }).finally(()=>{
+                setIsLoading(false);
+            })
 
-    };
+    }
+
+
 
     function convertDateFormat(inputDate) {
 
@@ -80,7 +95,35 @@ function InputForm() {
     const onApplicationDateChange = (date, dateString) => setApplicationDate(convertDateFormat(dateString));
     const onCertificateIssueDateChange = (date, dateString) => setCertificateIssueDate(convertDateFormat(dateString));
 
-    
+
+    const onDownload = async (url) => {
+        setIsDownloaded(true);
+        await axios.get(url, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'blob'
+        })
+            .then(response => {
+                const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = fileURL;
+                link.setAttribute('download', 'TC.pdf');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                message.success('Download successful');
+                setIsDownloaded(false);
+            })
+            .catch(error => {
+                message.error("Error Downloading PDF");
+                console.error('Error creating PDF:', error);
+            }).finally(() => {
+                setIsDownloaded(false);
+            });
+
+    }
+
     return (
         <>
             <AppNavbar />
@@ -92,6 +135,7 @@ function InputForm() {
                         <div>
                             <div className='section' style={{ padding: '100px 20px' }}>
                                 <div>
+                                  
                                     <Form name="custom-form" onFinish={onFinish}>
 
                                         <Form.Item label="TC Number" name="tcNo" rules={[{ required: true, message: 'Please enter the TC number' }]}>
@@ -139,7 +183,7 @@ function InputForm() {
                                         </Form.Item>
 
                                         <Form.Item label="Date of birth according to Admission Register (in words)" name="dob" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onDobDateChange} />
+                                            <DatePicker size='small' onChange={onDobDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Standard in which the pupil was last enrolled (in words)" name="lastEnrolled" rules={[{ required: true, message: 'Please enter the standard' }]}>
@@ -147,7 +191,7 @@ function InputForm() {
                                         </Form.Item>
 
                                         <Form.Item label="Date of Admission or promotion to that Standard" name="admissionDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onAdmissionDateChange} />
+                                            <DatePicker size='small' onChange={onAdmissionDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Whether qualified for promotion to a Higher Standard" name="qualifiedForPromotion" rules={[{ required: true, message: 'Please select an option' }]}>
@@ -173,21 +217,21 @@ function InputForm() {
 
 
                                         <Form.Item label="Date of the pupil's last attendance at School" name="lastAttendanceDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onLastAttendanceDateChange} />
+                                            <DatePicker size='small' onChange={onLastAttendanceDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Date on which the name was removed from rolls" name="removedDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onRemovedDateChange} />
+                                            <DatePicker size='small' onChange={onRemovedDateChange} />
                                         </Form.Item>
 
 
 
                                         <Form.Item label="Date of Application for Certificate" name="applicationDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onApplicationDateChange} />
+                                            <DatePicker size='small' onChange={onApplicationDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Date of Issue of the Certificate" name="certificateIssueDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                                            <DatePicker onChange={onCertificateIssueDateChange} />
+                                            <DatePicker size='small' onChange={onCertificateIssueDateChange} />
                                         </Form.Item>
 
                                         <Form.Item label="Reason for leaving" name="reasonForLeaving">
@@ -239,12 +283,36 @@ function InputForm() {
                                         </Form.Item>
 
                                         <Form.Item>
-                                            <DownloadModal/>
+                                            <div className="flex justify-between">
+                                                <div className="flex  align-items-center gap-4">
+                                                <Button className="bg-black text-white " htmlType="submit" loading={isLoading}>
+                                                    {isLoading ? 'Generating' : !isSuccess ? 'Submit' : <>
+                                                        <div className="flex gap-2 align-items-center">
+                                                            <ReloadOutlined />
+                                                            <span>Regenerate</span>
+                                                        </div>
+
+                                                    </>}
+                                                </Button>
+
+                                                {isSuccess && <>
+                                                    <Button loading={isDownloaded} onClick={() => { onDownload(response.downloadUrl) }} className="flex align-items-center">
+                                                        <CloudDownloadOutlined style={{ fontSize: '16px' }} /> Download
+                                                    </Button>
+                                                    <a href={response.url} style={{ textDecoration: 'none' }} target="_blank"> <EyeOutlined /> Preview</a>
+                                                    
+                                                </>
+                                                }
+                                                </div>
+                                                <Button htmlType="reset" onClick={()=>{setIsSuccess(false)}}>Reset Form</Button>
+                                            </div>
                                         </Form.Item>
                                     </Form>
+
                                 </div>
 
                             </div>
+
                         </div>
                     </>) : <p>Please Login</p>
                 }

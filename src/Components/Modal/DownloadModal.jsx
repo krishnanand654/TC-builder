@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal, Progress } from 'antd';
 import axios from 'axios';
 
-const DownloadModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const DownloadModal = ({onSubmit, isModalOpen, setIsModalOpen}) => {
   const [value, setValue] = useState(0);
   const [position, setPosition] = useState('end');
   const [loading, setLoading] = useState(false);
@@ -11,8 +10,9 @@ const DownloadModal = () => {
 
   const token = localStorage.getItem("token");
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const showDModal = () => {
+    onSubmit();
+    // setIsModalOpen(true)
     setValue(0); 
   };
 
@@ -67,7 +67,7 @@ const DownloadModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showDModal}>
         Generate TC
       </Button>
       <Modal title="Download Progress" footer={null}  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
