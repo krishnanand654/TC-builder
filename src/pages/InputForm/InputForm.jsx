@@ -196,22 +196,22 @@ function InputForm() {
 
                                         <Form.Item label="Whether qualified for promotion to a Higher Standard" name="qualifiedForPromotion" rules={[{ required: true, message: 'Please select an option' }]}>
                                             <Select>
-                                                <Option value="Yes">Yes</Option>
-                                                <Option value="No">No</Option>
+                                                <Option value={true}>Yes</Option>
+                                                <Option value={false}>No</Option>
                                             </Select>
                                         </Form.Item>
 
                                         <Form.Item label="Whether the pupil has paid all the fees due to School" name="feesPaid" rules={[{ required: true, message: 'Please select an option' }]}>
                                             <Select>
-                                                <Option value="Yes">Yes</Option>
-                                                <Option value="No">No</Option>
+                                                <Option value={true}>Yes</Option>
+                                                <Option value={false}>No</Option>
                                             </Select>
                                         </Form.Item>
 
                                         <Form.Item label="Whether the pupil was in receipt of the fee concession" name="feeConcession" rules={[{ required: true, message: 'Please select an option' }]}>
                                             <Select>
-                                                <Option value="Yes">Yes</Option>
-                                                <Option value="No">No</Option>
+                                                <Option value={true}>Yes</Option>
+                                                <Option value={false}>No</Option>
                                             </Select>
                                         </Form.Item>
 
